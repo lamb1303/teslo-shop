@@ -5,13 +5,16 @@ export interface IProduct {
     inStock: number;
     price: number;
     sizes: ISize[];
-    slug: string; // URL in the page. 
+    slug: string;
     tags: string[];
     title: string;
     type: IType;
-    gender: 'men'|'women'|'kid'|'unisex'
+    gender: 'men' | 'women' | 'kid' | 'unisex';
+    createdAt: string;
+    updatedAt: string;
+
 }
 
 
-export type ISize = 'XS'|'S'|'M'|'L'|'XL'|'XXL'|'XXXL';
-export type IType = 'shirts'|'pants'|'hoodies'|'hats';
+export type ISize = 'XS' | 'S' | 'M' | 'L' | 'XL' | 'XXL' | 'XXXL';
+export type IType = 'shirts' | 'pants' | 'hoodies' | 'hats';
