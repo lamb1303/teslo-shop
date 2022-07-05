@@ -32,7 +32,8 @@ export const darkTheme = createTheme({
       },
       styleOverrides: {
         root: {
-          backgroundColor: "#0C151D",
+          backgroundColor: "rgba(0, 17, 50, 0.8)",
+          backdropFilter: 'blur(6px)',
           height: 60,
         },
       },

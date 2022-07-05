@@ -55,7 +55,7 @@ export const ProductCard: FC<Props> = ({ product }) => {
                 >
                   {product.title}
                 </Typography>
-                <Typography fontWeight={300}>{`$${product.price}`}</Typography>
+                <Typography fontWeight={300}><strong>{`$${product.price}`}</strong></Typography>
               </CardContent>
             </CardActionArea>
           </Link>
