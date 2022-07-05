@@ -22,6 +22,11 @@ export const lightTheme = createTheme({
       defaultProps: {
         underline: "none",
       },
+      styleOverrides: {
+        root: {
+          margin: 3,
+        },
+      },
     },
     MuiAppBar: {
       defaultProps: {
@@ -30,7 +35,8 @@ export const lightTheme = createTheme({
       },
       styleOverrides: {
         root: {
-          backgroundColor: "white",
+          backgroundColor: "rgba(255, 255, 255, 0.8)",
+          backdropFilter: 'blur(6px)',
           height: 60,
         },
       },

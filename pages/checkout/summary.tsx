@@ -60,9 +60,13 @@ const SummaryPage = () => {
               <OrderSummary />
 
               <Box sx={{ mt: 3 }}>
+              <NextLink href={'/orders/123'} passHref>
+                <Link>
                 <MuiButton color="secondary" className="circular-btn" fullWidth>
                   Confirmar Orden
                 </MuiButton>
+                </Link>
+               </NextLink>
               </Box>
             </CardContent>
           </Card>
