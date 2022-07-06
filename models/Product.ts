@@ -34,7 +34,8 @@ const productSchema = new Schema({
         timestamps: true
     })
 
-//TODO: Create index
+//TODO: Create index to connect two fields (create index with index title and tags)
+productSchema.index({title: 'text', tags: 'text'})
 
 const Product: Model<IProduct> = mongoose.models.Product || model('Product', productSchema)
 
