@@ -12,8 +12,11 @@ import {
 } from "@mui/material";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+import { useRouter } from "next/router";
 
 export const Navbar = () => {
+  const { asPath } = useRouter();
+
   return (
     <>
       <AppBar>
@@ -30,23 +33,46 @@ export const Navbar = () => {
               display: {
                 xs: "none",
                 sm: "block",
-            margin: 9
+                margin: 9,
               },
             }}
           >
-            <NextLink href="category/men" passHref>
+            <NextLink
+              href={{
+                pathname: `category/men`,
+              }}
+              passHref
+            >
               <Link>
-                <Button>Hombres</Button>
+                <Button color={asPath === "/category/men" ? "primary" : "info"}>
+                  Hombres
+                </Button>
               </Link>
             </NextLink>
-            <NextLink href="category/women" passHref>
+            <NextLink
+              href={{
+                pathname: `category/women`,
+              }}
+              passHref
+            >
               <Link>
-                <Button>Mujeres</Button>
+                <Button
+                  color={asPath === "/category/women" ? "primary" : "info"}
+                >
+                  Mujeres
+                </Button>
               </Link>
             </NextLink>
-            <NextLink href="category/kid" passHref>
+            <NextLink
+              href={{
+                pathname: `category/kid`,
+              }}
+              passHref
+            >
               <Link>
-                <Button>Niños</Button>
+                <Button color={asPath === "/category/kid" ? "primary" : "info"}>
+                  Niños
+                </Button>
               </Link>
             </NextLink>
           </Box>

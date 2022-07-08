@@ -23,7 +23,7 @@ export default function handler(
     }
 }
 
-const searchProducts = async (req: NextApiRequest, res: NextApiResponse) => {
+const searchProducts = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     let { query = '' } = req.query;
 
     if (query.length === 0) {
