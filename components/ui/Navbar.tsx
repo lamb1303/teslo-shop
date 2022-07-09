@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import NextLink from "next/link";
 import {
   AppBar,
@@ -6,6 +6,8 @@ import {
   Box,
   Button,
   IconButton,
+  Input,
+  InputAdornment,
   Link,
   Toolbar,
   Typography,
@@ -13,9 +15,19 @@ import {
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import { useRouter } from "next/router";
+import { UiContext } from "../../context/ui";
+import { ClearOutlined } from "@mui/icons-material";
 
 export const Navbar = () => {
-  const { asPath } = useRouter();
+  const { asPath, push } = useRouter();
+  const { toggleSideMenu } = useContext(UiContext);
+  const [term, setTerm] = useState("");
+  const [isSearchVisible, setisSearchVisible] = useState(false);
+
+  const onSearchTerm = () => {
+    if (term.trim().length === 0) return null;
+    push(`/search/${term}`);
+  };
 
   return (
     <>
@@ -29,17 +41,20 @@ export const Navbar = () => {
           </NextLink>
           <Box flex={1} />
           <Box
+            className="fadeIn"
             sx={{
-              display: {
-                xs: "none",
-                sm: "block",
-                margin: 9,
-              },
+              display: isSearchVisible
+                ? "none"
+                : {
+                    xs: "none",
+                    sm: "block",
+                    margin: 9,
+                  },
             }}
           >
             <NextLink
               href={{
-                pathname: `category/men`,
+                pathname: `/category/men`,
               }}
               passHref
             >
@@ -51,7 +66,7 @@ export const Navbar = () => {
             </NextLink>
             <NextLink
               href={{
-                pathname: `category/women`,
+                pathname: `/category/women`,
               }}
               passHref
             >
@@ -65,7 +80,7 @@ export const Navbar = () => {
             </NextLink>
             <NextLink
               href={{
-                pathname: `category/kid`,
+                pathname: `/category/kid`,
               }}
               passHref
             >
@@ -77,7 +92,53 @@ export const Navbar = () => {
             </NextLink>
           </Box>
           <Box flex={1} />
-          <IconButton>
+          {isSearchVisible ? (
+            <Input
+              sx={{
+                display: {
+                  xs: "none",
+                  sm: "flex",
+                },
+              }}
+              className="fadeIn"
+              autoFocus={true}
+              value={term}
+              onChange={(e) => setTerm(e.target.value)}
+              onKeyPress={(e) => (e.key === "Enter" ? onSearchTerm() : null)}
+              type="text"
+              placeholder="Buscar..."
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton onClick={() => setisSearchVisible(false)}>
+                    <ClearOutlined />
+                  </IconButton>
+                </InputAdornment>
+              }
+            />
+          ) : (
+            <IconButton
+              className="fadeIn"
+              onClick={() => setisSearchVisible(true)}
+              sx={{
+                display: {
+                  xs: "none",
+                  sm: "flex",
+                },
+              }}
+            >
+              <SearchOutlinedIcon />
+            </IconButton>
+          )}
+
+          <IconButton
+            sx={{
+              display: {
+                xs: "flex",
+                sm: "none",
+              },
+            }}
+            onClick={toggleSideMenu}
+          >
             <SearchOutlinedIcon />
           </IconButton>
           <NextLink href="/cart" passHref>
@@ -89,7 +150,7 @@ export const Navbar = () => {
               </IconButton>
             </Link>
           </NextLink>
-          <Button>Menu</Button>
+          <Button onClick={toggleSideMenu}>Menu</Button>
         </Toolbar>
       </AppBar>
     </>
