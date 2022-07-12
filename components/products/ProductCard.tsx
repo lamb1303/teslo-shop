@@ -7,6 +7,7 @@ import {
   Grid,
   Link,
   Box,
+  Chip,
 } from "@mui/material";
 import React, { FC, useMemo, useState } from "react";
 import { IProduct } from "../../interfaces";
@@ -40,15 +41,31 @@ export const ProductCard: FC<Props> = ({ product }) => {
         <NextLink href={`/product/${product.slug}`} passHref prefetch={false}>
           <Link>
             <CardActionArea>
+              {product.inStock === 0 && (
+                <Chip
+                  color="error"
+                  sx={{
+                    position: "absolute",
+                    zIndex: 99,
+                    top: '10px',
+                    right: '10px'
+                  }}
+                  label="No hay productos"
+                />
+              )}
               <CardMedia
                 className="fadeIn"
                 component="img"
                 alt={product.title}
                 image={productImage}
+                sx={{ filter: product.inStock === 0 ? "blur(2px)" : "none" }}
                 onLoad={() => setImageLoader(true)}
               />
               <CardContent className="fadeIn" sx={{ height: "100px" }}>
-                <Box sx={{mt: 1, display: imageLoader ? 'block':'none'}} className='fadeIn'>
+                <Box
+                  sx={{ mt: 1, display: imageLoader ? "block" : "none" }}
+                  className="fadeIn"
+                >
                   <Typography
                     fontWeight={400}
                     sx={{
