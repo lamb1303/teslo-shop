@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import Head from "next/head";
 import { Navbar, SideMenu } from "../ui";
-
+import { Box } from "@mui/material";
 
 interface Props {
   title: string;
@@ -26,12 +26,21 @@ export const ShopLayout: FC<Props> = ({
         {imageFullUrl && <meta name="og:image" content={imageFullUrl} />}
       </Head>
       <nav>
-          <Navbar/>
+        <Navbar />
       </nav>
-      <SideMenu/>
-      <main style={{ margin: "80px", maxWidth: 1740, padding: "0px 30px" }}>
+      <SideMenu />
+      <Box
+        sx={{
+          margin: {
+            sm: "80px",
+            xs: "80px 15px",
+          },
+          maxWidth: 1740,
+          padding: "0px 18px",
+        }}
+      >
         {children}
-      </main>
+      </Box>
       <footer></footer>
     </>
   );
