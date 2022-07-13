@@ -4,6 +4,7 @@ import React, { FC } from "react";
 interface Props extends ButtonProps {}
 
 export const MuiButton: FC<Props> = ({
+  type,
   variant,
   color,
   children,
@@ -27,6 +28,7 @@ export const MuiButton: FC<Props> = ({
       className={className}
       fullWidth={fullWidth}
       onClick={onClick}
+      type={type}
     >
       {children}
     </Button>
