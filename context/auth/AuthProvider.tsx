@@ -1,5 +1,6 @@
 import axios, { AxiosError } from "axios";
 import Cookies from "js-cookie";
+import { useRouter } from "next/router";
 import { FC, useEffect, useReducer } from "react";
 import { entriesApi } from "../../apis";
 import { IUser } from "../../interfaces";
@@ -21,12 +22,16 @@ const AUTH_INITIAL_STATE: AuthState = {
 
 export const AuthProvider: FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, AUTH_INITIAL_STATE);
+  const router = useRouter()
 
   useEffect(() => {
     checkToken();
   }, []);
 
   const checkToken = async () => {
+    if (!Cookies.get("token")) {
+      return;
+    }
     const coockie = Cookies.get("token");
     try {
       const { data } = await entriesApi.post("/user/validate-token", {
@@ -92,12 +97,19 @@ export const AuthProvider: FC<Props> = ({ children }) => {
     }
   };
 
+  const logout = ()=>{
+    Cookies.remove('token')
+    Cookies.remove('cart')
+    router.reload()
+  }
+
   return (
     <AuthContext.Provider
       value={{
         ...state,
         loginUser,
         registerUser,
+        logout
       }}
     >
       {children}

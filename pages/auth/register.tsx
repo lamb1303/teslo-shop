@@ -40,10 +40,11 @@ const RegisterPage = () => {
       }, 3000);
       return;
     }
+    const destination = router.query.p?.toString() || '/'
 
-    router.replace("/");
+    router.replace(destination);
     // Replaced because we have the user context
-    
+
     // try {
     //   const { data } = await entriesApi.post("/user/register", {
     //     name,
@@ -127,7 +128,14 @@ const RegisterPage = () => {
               </MuiButton>
             </Grid>
             <Grid item xs={12} display="flex" justifyContent="end">
-              <NextLink href="/auth/login" passHref>
+              <NextLink
+                href={
+                  router.query.p
+                    ? `/auth/login?p=${router.query.p}`
+                    : "/auth/login"
+                }
+                passHref
+              >
                 <Link underline="always">Ya tienes cuenta?</Link>
               </NextLink>
             </Grid>
