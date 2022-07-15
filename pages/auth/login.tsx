@@ -15,7 +15,7 @@ type FormData = {
   password: string;
 };
 const LoginPage = () =>  {
-  const {replace} = useRouter();
+  const {replace, query} = useRouter();
   const {
     register,
     handleSubmit,
@@ -34,8 +34,8 @@ const LoginPage = () =>  {
       }, 3000);
       return; 
     }
-
-    replace('/')
+   const destination = query.p?.toString() || '/'
+    replace(destination)
 
     // Replaced because we have the user context
 
@@ -107,7 +107,7 @@ const LoginPage = () =>  {
               </MuiButton>
             </Grid>
             <Grid item xs={12} display="flex" justifyContent="end">
-              <NextLink href="/auth/register" passHref>
+              <NextLink href={query.p ? `/auth/register?p=${query.p}`:'/auth/register'} passHref>
                 <Link underline="always">No tienes cuenta?</Link>
               </NextLink>
             </Grid>
