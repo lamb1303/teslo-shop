@@ -1,6 +1,13 @@
-import { Grid, Typography, TextField, Link, Chip } from "@mui/material";
+import {
+  Grid,
+  Typography,
+  TextField,
+  Link,
+  Chip,
+  Divider,
+} from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AuthLayout } from "../../components/layouts";
 import { MuiButton } from "../../components/shared/MuiButton";
 import NextLink from "next/link";
@@ -10,32 +17,47 @@ import { entriesApi } from "./../../apis/";
 import { ErrorOutline } from "@mui/icons-material";
 import { AuthContext } from "../../context";
 import { useRouter } from "next/router";
+import { getSession, signIn, getProviders } from "next-auth/react";
+import { GetServerSideProps } from "next";
 type FormData = {
   email: string;
   password: string;
 };
-const LoginPage = () =>  {
-  const {replace, query} = useRouter();
+const LoginPage = () => {
+  const { replace, query } = useRouter();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>();
   const [showError, setShowError] = useState(false);
-  const {loginUser} = useContext(AuthContext)
+  // const { loginUser } = useContext(AuthContext);
+  const [providers, setProviders] = useState<any>({});
+
+  useEffect(() => {
+    getProviders().then((prov) => {
+      setProviders(prov);
+    });
+  }, []);
 
   const onLoginUser = async ({ email, password }: FormData) => {
     setShowError(false);
-    const isValidLogin = await loginUser(email, password)
-    if(!isValidLogin){
-      setShowError(true)
-      setTimeout(() => {
-        setShowError(false);
-      }, 3000);
-      return; 
-    }
-   const destination = query.p?.toString() || '/'
-    replace(destination)
+    await signIn("credentials", {
+      email,
+      password,
+    });
+    // Without NextAuth
+
+    //   const isValidLogin = await loginUser(email, password)
+    //   if(!isValidLogin){
+    //     setShowError(true)
+    //     setTimeout(() => {
+    //       setShowError(false);
+    //     }, 3000);
+    //     return;
+    //   }
+    //  const destination = query.p?.toString() || '/'
+    //   replace(destination)
 
     // Replaced because we have the user context
 
@@ -107,15 +129,67 @@ const LoginPage = () =>  {
               </MuiButton>
             </Grid>
             <Grid item xs={12} display="flex" justifyContent="end">
-              <NextLink href={query.p ? `/auth/register?p=${query.p}`:'/auth/register'} passHref>
+              <NextLink
+                href={
+                  query.p ? `/auth/register?p=${query.p}` : "/auth/register"
+                }
+                passHref
+              >
                 <Link underline="always">No tienes cuenta?</Link>
               </NextLink>
             </Grid>
+          </Grid>
+
+          <Grid item xs={12} display="flex" justifyContent="end" flexDirection='column'>
+            <Divider sx={{ width: "100%", mb: 2 }} />
+            {Object.values(providers).map((provider: any) => {
+              if(provider.id === 'credentials'){
+                return <Box key='credentials'></Box>
+              }
+              return (
+                <MuiButton
+                onClick={()=> signIn(provider.id)}
+                  variant="outlined"
+                  fullWidth
+                  color="primary"
+                  key={provider.id}
+                  sx={{
+                    ":hover": {
+                      backgroundColor: "#3A64D8",
+                      color: 'white'
+                    },
+                  }}
+                >
+                  {provider.name}
+                </MuiButton>
+              );
+            })}
           </Grid>
         </Box>
       </form>
     </AuthLayout>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async ({
+  req,
+  query,
+}) => {
+  const session = await getSession({ req });
+
+  const { p = "/" } = query;
+
+  if (session) {
+    return {
+      redirect: {
+        destination: p.toString(),
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {},
+  };
 };
 
 export default LoginPage;

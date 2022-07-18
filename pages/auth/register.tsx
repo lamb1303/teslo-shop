@@ -10,6 +10,8 @@ import { validations } from "../../utils";
 import { ErrorOutline } from "@mui/icons-material";
 import { useRouter } from "next/router";
 import { AuthContext } from "../../context";
+import { getSession, signIn } from "next-auth/react";
+import { GetServerSideProps } from "next";
 
 type FormData = {
   email: string;
@@ -40,9 +42,11 @@ const RegisterPage = () => {
       }, 3000);
       return;
     }
-    const destination = router.query.p?.toString() || '/'
+    // const destination = router.query.p?.toString() || '/'
 
-    router.replace(destination);
+    // router.replace(destination);
+
+    await signIn('credentials',{email, password})
     // Replaced because we have the user context
 
     // try {
@@ -144,6 +148,24 @@ const RegisterPage = () => {
       </form>
     </AuthLayout>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async ({ req, query }) => {
+  const session = await getSession({ req });
+
+  const {p = '/'} = query
+
+  if (session) {
+    return {
+      redirect: {
+        destination: p.toString(),
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {},
+  };
 };
 
 export default RegisterPage;
