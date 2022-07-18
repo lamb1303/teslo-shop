@@ -7,16 +7,26 @@ import {
   Link,
   Typography,
 } from "@mui/material";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { CartList, OrderSummary } from "../../components/cart";
 import { ShopLayout } from "../../components/layouts/ShopLayout";
 import { MuiButton } from "../../components/shared";
 import NextLink from "next/link";
 import { CartContext } from "../../context";
 import { countries } from "../../utils";
+import { useRouter } from "next/router";
+import Cookies from "js-cookie";
 
 const SummaryPage = () => {
   const { shippingAddress, numberOfItems } = useContext(CartContext);
+  const router = useRouter();
+
+  useEffect(() => {
+    if(!Cookies.get('firstName')){
+      router.push('/checkout/address')
+    }
+  }, [router])
+  
   if (!shippingAddress) {
     return <></>;
   }
@@ -55,18 +65,19 @@ const SummaryPage = () => {
               <Typography>{firstName}</Typography>
               <Typography>
                 {lastName}
-                {address2
-                  ? `, ${address2}`
-                  : ""}
+                {address1
+                  ? `, ${address1}`
+                  : `, ${address2}`}
               </Typography>
               <Typography>
                 {city} {zipCode}
               </Typography>
               <Typography>
-                {
+                {/* {
                   countries.find((c) => c.code === country)
                     ?.name
-                }
+                } */}
+                {country}
               </Typography>
               <Typography>{phoneNumber}</Typography>
 

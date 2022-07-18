@@ -12,15 +12,20 @@ export const MuiButton: FC<Props> = ({
   disabled,
   fullWidth,
   className = "circular-btn",
-  onClick
+  sx,
+  onClick,
 }) => {
   return (
     <Button
-      sx={{
-        ":hover": {
-          backgroundColor: "#274494",
-        },
-      }}
+      sx={
+        sx
+          ? sx
+          : {
+              ":hover": {
+                backgroundColor: "#274494",
+              },
+            }
+      }
       variant={variant}
       color={color}
       size={size}
