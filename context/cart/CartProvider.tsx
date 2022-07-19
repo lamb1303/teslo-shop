@@ -1,8 +1,15 @@
 import { FC, useEffect, useReducer } from "react";
-import { ICartProduct, IOderSummary } from "../../interfaces";
+import {
+  ICartProduct,
+  IOderSummary,
+  IOrder,
+  ShippingAddress,
+} from "../../interfaces";
 import { CartContext, cartReducer } from "./";
 import Cookie from "js-cookie";
 import Cookies from "js-cookie";
+import { entriesApi } from "../../apis";
+import axios from "axios";
 
 interface Props {
   children: React.ReactNode;
@@ -16,17 +23,6 @@ export interface CartState {
   total: number;
   subTotal: number;
   shippingAddress?: ShippingAddress;
-}
-
-export interface ShippingAddress {
-  firstName: string;
-  lastName: string;
-  address1: string;
-  address2?: string;
-  zipCode: string;
-  city: string;
-  country: string;
-  phoneNumber: string;
 }
 
 const CART_INITIAL_STATE: CartState = {
@@ -170,9 +166,51 @@ export const CartProvider: FC<Props> = ({ children }) => {
     Cookies.set("city", address.city);
     Cookies.set("country", address.country);
     dispatch({
-      type: '[Cart] - Update Address',
+      type: "[Cart] - Update Address",
       payload: address,
     });
+  };
+
+  const createOrder = async (): Promise<{
+    hasError: boolean;
+    message: string;
+  }> => {
+    if (!state.shippingAddress) {
+      throw new Error("No hay direccion de entrega");
+    }
+
+    const body: IOrder = {
+      orderItems: state.cart.map((p) => ({
+        ...p,
+        size: p.size!,
+      })),
+      shippingAddress: state.shippingAddress,
+      numberOfItems: state.numberOfItems,
+      subTotal: state.subTotal,
+      total: state.total,
+      tax: state.tax,
+      isPaid: false,
+    };
+    try {
+      const { data } = await entriesApi.post<IOrder>("/orders", body);
+      dispatch({type:'[Cart] - Order Complete'})
+      return {
+        hasError: false,
+        message: data._id!,
+      };
+    } catch (error) {
+      console.log(error);
+      if (axios.isAxiosError(error)) {
+        return {
+          hasError: true,
+          message: "Axios error",
+        };
+      }
+      return {
+        hasError: true,
+        message: "Error no controlado, hable con el administrador",
+      };
+    }
   };
 
   return (
@@ -182,7 +220,8 @@ export const CartProvider: FC<Props> = ({ children }) => {
         addToCart,
         updateCartQuantity,
         removeProductInCart,
-        updateAddress
+        updateAddress,
+        createOrder,
       }}
     >
       {children}
