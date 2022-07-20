@@ -7,7 +7,7 @@ const userSchema = new Schema({
     password: { type: String, required: true },
     role: {
         type: String, enum: {
-            values: ['admin', 'client'],
+            values: ['admin', 'client','super-user', 'SEO'],
             message: '{VALUE] role not valid',
             default: 'client',
             required: true
