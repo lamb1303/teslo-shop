@@ -4,14 +4,22 @@ import { getToken } from 'next-auth/jwt';
 
 
 export async function middleware(req: NextRequest) {
-    const session = await getToken({
+    const session:any = await getToken({
         req,
         secret: process.env.NEXTAUTH_SECRET
     })
-
+    const validRoles = ['admin','super-user','SEO']
     if(!session){
-        return NextResponse.redirect(`http://localhost:3000/auth/login?p=${config.matcher}`);
+        return NextResponse.redirect(`http://localhost:3000/auth/login?p=${config.matcher[0]}`);
     }
+
+  
+
+   if(session){
+    if(!validRoles.includes(session.user.role)){
+        return NextResponse.redirect(`http://localhost:3000/`);
+    }
+   }
 
     return NextResponse.next()
 
@@ -31,5 +39,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-    matcher: '/checkout/address',
+    matcher: ['/checkout/address','/admin','/admin/users']
 };

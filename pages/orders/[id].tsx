@@ -73,12 +73,19 @@ const OrderPage: NextPage<Props> = ({ order }) => {
       title={"Resumen de la orden"}
       pageDescription={"Resumen de la orden"}
     >
-      <Typography variant="h1" component="h1">
+      <Typography variant="h1" component="h1"  sx={{
+          fontSize: {
+            xs: 18,
+            sm: 32,
+          },
+        }}>
         Orden: {order._id}
       </Typography>
       {!order.isPaid ? (
         <Chip
-          sx={{ my: 2 }}
+          sx={{ my: 2, sm:{
+            fontSize: 10
+          } }}
           variant="outlined"
           color="error"
           icon={<CreditCardOffOutlined />}
