@@ -13,6 +13,8 @@ export const MuiButton: FC<Props> = ({
   fullWidth,
   className = "circular-btn",
   sx,
+  startIcon,
+  href,
   onClick,
 }) => {
   return (
@@ -34,6 +36,8 @@ export const MuiButton: FC<Props> = ({
       fullWidth={fullWidth}
       onClick={onClick}
       type={type}
+      startIcon={startIcon}
+      href={href}
     >
       {children}
     </Button>

@@ -12,7 +12,11 @@ export const getProductBySlug = async (slug: string): Promise<IProduct | null> =
         return null
     }
 
-    return JSON.parse(JSON.stringify(product))
+    product.images = product.images.map( image => {
+        return image.includes('http') ? image : `${ process.env.HOST_NAME}products/${ image }`
+    });
+
+    return JSON.parse( JSON.stringify( product ) );
 }
 
 export const getAllProductsBySlug = async (): Promise<IProduct[]> => {
@@ -30,8 +34,8 @@ export const getProductsByTerm = async (term: string): Promise<IProduct[]> => {
     const products = await Product.find({
         $text: { $search: term }
     })
-    .select('title images price inStock slug -_id')
-    .lean();
+        .select('title images price inStock slug -_id')
+        .lean();
     await db.disconnect();
 
     return products
