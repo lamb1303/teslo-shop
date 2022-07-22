@@ -4,14 +4,31 @@ import {
   CardContent,
   Divider,
   Grid,
+  Link,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { CartList, OrderSummary } from "../../components/cart";
 import { ShopLayout } from "../../components/layouts/ShopLayout";
 import { MuiButton } from "../../components/shared";
+import NextLink from "next/link";
+import { CartContext } from "../../context";
+import { useRouter } from "next/router";
 
 const CartPage = () => {
+  const { isLoaded, cart } = useContext(CartContext);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isLoaded && cart.length === 0) {
+      router.replace("/cart/empty");
+    }
+  }, [isLoaded, cart, router]);
+
+  if(!isLoaded || cart.length === 0){
+    return <></>
+  }
+
   return (
     <ShopLayout title={"Carrito"} pageDescription={"Carrito de compras"}>
       <Typography variant="h1" component="h1">
@@ -31,9 +48,17 @@ const CartPage = () => {
               <OrderSummary />
 
               <Box sx={{ mt: 3 }}>
-                <MuiButton color="secondary" className="circular-btn" fullWidth>
-                  Confirmar Orden
-                </MuiButton>
+                <NextLink href={"/checkout/address"} passHref>
+                  <Link>
+                    <MuiButton
+                      color="secondary"
+                      className="circular-btn"
+                      fullWidth
+                    >
+                      Checkout
+                    </MuiButton>
+                  </Link>
+                </NextLink>
               </Box>
             </CardContent>
           </Card>

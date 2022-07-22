@@ -1,7 +1,7 @@
-import { createTheme } from "@mui/material/styles";
+import { createTheme, ThemeOptions } from "@mui/material/styles";
 import { red } from "@mui/material/colors";
 
-export const darkTheme = createTheme({
+export const darkTheme:ThemeOptions = createTheme({
   palette: {
     mode: "dark",
     primary: {
@@ -32,7 +32,8 @@ export const darkTheme = createTheme({
       },
       styleOverrides: {
         root: {
-          backgroundColor: "#0C151D",
+          backgroundColor: "rgba(0, 17, 50, 0.8)",
+          backdropFilter: 'blur(6px)',
           height: 60,
         },
       },

@@ -10,7 +10,7 @@ export const ProductSlideShow: FC<Props> = ({ images }) => {
   return (
     <Carousel height={600}>
       {images.map((img) => {
-        const url = `/products/${img}`;
+        const url = `${img}`;
         return (
           <div className={styles["each-slide"]} key={img}>
             <div

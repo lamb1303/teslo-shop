@@ -2,18 +2,63 @@ import {
   Box,
   Card,
   CardContent,
+  Chip,
   Divider,
   Grid,
   Link,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { CartList, OrderSummary } from "../../components/cart";
 import { ShopLayout } from "../../components/layouts/ShopLayout";
 import { MuiButton } from "../../components/shared";
 import NextLink from "next/link";
+import { CartContext } from "../../context";
+import { countries } from "../../utils";
+import { useRouter } from "next/router";
+import Cookies from "js-cookie";
 
 const SummaryPage = () => {
+  const { shippingAddress, numberOfItems, createOrder } =
+    useContext(CartContext);
+  const [isPosting, setIsPosting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!Cookies.get("firstName")) {
+      router.push("/checkout/address");
+    }
+  }, [router]);
+
+  const onCreateOrder = async () => {
+    setIsPosting(true);
+    const { hasError, message } = await createOrder();
+
+    if(hasError){
+      setIsPosting(false)
+      setErrorMessage(message)
+      return
+    }
+
+    router.replace(`/orders/${message}`)
+  };
+
+  if (!shippingAddress) {
+    return <></>;
+  }
+
+  const {
+    firstName,
+    lastName,
+    address1,
+    address2,
+    city,
+    country,
+    zipCode,
+    phoneNumber,
+  } = shippingAddress;
   return (
     <ShopLayout
       title={"Resumen de orden"}
@@ -30,7 +75,8 @@ const SummaryPage = () => {
           <Card className="summary-card">
             <CardContent>
               <Typography variant="h2" component="h2">
-                Resumen (2 productos)
+                Resumen ({numberOfItems}{" "}
+                {numberOfItems === 1 ? "producto" : "productos"})
               </Typography>
               <Divider sx={{ my: 1 }} />
 
@@ -43,11 +89,22 @@ const SummaryPage = () => {
                 </NextLink>
               </Box>
 
-              <Typography>Luis Medina</Typography>
-              <Typography>123 Algun lugar</Typography>
-              <Typography>Saltillo, Coahuila 25494</Typography>
-              <Typography>Mexico</Typography>
-              <Typography>+52 84465796588</Typography>
+              <Typography>{firstName}</Typography>
+              <Typography>
+                {lastName}
+                {address1 ? `, ${address1}` : `, ${address2}`}
+              </Typography>
+              <Typography>
+                {city} {zipCode}
+              </Typography>
+              <Typography>
+                {/* {
+                  countries.find((c) => c.code === country)
+                    ?.name
+                } */}
+                {country}
+              </Typography>
+              <Typography>{phoneNumber}</Typography>
 
               <Divider sx={{ my: 1 }} />
 
@@ -59,10 +116,25 @@ const SummaryPage = () => {
 
               <OrderSummary />
 
-              <Box sx={{ mt: 3 }}>
-                <MuiButton color="secondary" className="circular-btn" fullWidth>
+              <Box sx={{ mt: 3 }} display="flex" flexDirection="column">
+                {/* <NextLink href={"/orders/123"} passHref>
+                  <Link> */}
+                <MuiButton
+                  color="secondary"
+                  className="circular-btn"
+                  fullWidth
+                  onClick={onCreateOrder}
+                  disabled={isPosting}
+                >
                   Confirmar Orden
                 </MuiButton>
+                <Chip
+                  color="error"
+                  label={errorMessage}
+                  sx={{ display: errorMessage ? "flex" : "none", mt: 2 }}
+                />
+                {/* </Link>
+                </NextLink> */}
               </Box>
             </CardContent>
           </Card>

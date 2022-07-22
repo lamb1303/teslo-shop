@@ -1,7 +1,7 @@
-import { createTheme } from "@mui/material/styles";
+import { createTheme, ThemeOptions } from "@mui/material/styles";
 import { red } from "@mui/material/colors";
 
-export const lightTheme = createTheme({
+export const lightTheme:ThemeOptions = createTheme({
   palette: {
     mode: "light",
     background: {
@@ -22,6 +22,11 @@ export const lightTheme = createTheme({
       defaultProps: {
         underline: "none",
       },
+      styleOverrides: {
+        root: {
+          margin: 3,
+        },
+      },
     },
     MuiAppBar: {
       defaultProps: {
@@ -30,7 +35,8 @@ export const lightTheme = createTheme({
       },
       styleOverrides: {
         root: {
-          backgroundColor: "white",
+          backgroundColor: "rgba(255, 255, 255, 0.8)",
+          backdropFilter: 'blur(6px)',
           height: 60,
         },
       },
