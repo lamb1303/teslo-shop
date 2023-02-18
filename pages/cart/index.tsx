@@ -25,8 +25,8 @@ const CartPage = () => {
     }
   }, [isLoaded, cart, router]);
 
-  if(!isLoaded || cart.length === 0){
-    return <></>
+  if (!isLoaded || cart.length === 0) {
+    return <></>;
   }
 
   return (
@@ -48,7 +48,7 @@ const CartPage = () => {
               <OrderSummary />
 
               <Box sx={{ mt: 3 }}>
-                <NextLink href={"/checkout/address"} passHref>
+                <NextLink href={{ pathname: "/checkout/address" }} passHref>
                   <Link>
                     <MuiButton
                       color="secondary"
