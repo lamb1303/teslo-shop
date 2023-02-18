@@ -84,7 +84,7 @@ const SummaryPage = () => {
                 <Typography variant="subtitle1">
                   Direccion de entrega
                 </Typography>
-                <NextLink href="/checkout/address" passHref>
+                <NextLink href={{pathname:"/checkout/address"}} passHref>
                   <Link underline="always">Editar</Link>
                 </NextLink>
               </Box>
@@ -109,7 +109,7 @@ const SummaryPage = () => {
               <Divider sx={{ my: 1 }} />
 
               <Box display="flex" justifyContent="end">
-                <NextLink href="/cart" passHref>
+                <NextLink href={{pathname:"/cart"}} passHref>
                   <Link underline="always">Editar</Link>
                 </NextLink>
               </Box>
