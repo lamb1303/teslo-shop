@@ -89,13 +89,15 @@ const ProductsPage = () => {
       icon={<CategoryOutlined />}
     >
       <Box display={"flex"} justifyContent="end" sx={{ mb: 2 }}>
-        <MuiButton
-          startIcon={<AddOutlined />}
-          color="secondary"
-          href="/admin/products/new"
+        <NextLink
+          href={{ pathname: "/admin/products/new" }}
+          passHref
         >
+           <MuiButton startIcon={<AddOutlined />} color="secondary">
           Crear Producto
         </MuiButton>
+        </NextLink>
+       
       </Box>
       <Grid container className="fadeIn">
         <Grid item xs={12} sx={{ height: 650, width: "100%" }}>
