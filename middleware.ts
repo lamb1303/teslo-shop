@@ -10,14 +10,14 @@ export async function middleware(req: NextRequest) {
     })
     const validRoles = ['admin', 'super-user', 'SEO']
     if (!session) {
-        return NextResponse.redirect(`${process.env.HOST_NAME}/auth/login?p=${!session ? '`/' : config.matcher[0]}`);
+        return NextResponse.redirect(`/auth/login?p=${!session ? '`/' : config.matcher[0]}`);
     }
 
 
 
     if (session) {
         if (!validRoles.includes(session.user.role)) {
-            return NextResponse.redirect(`${process.env.HOST_NAME}`);
+            return NextResponse.redirect(`${process.env.NODE_ENV}`);
         }
     }
 
