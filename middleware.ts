@@ -10,7 +10,7 @@ export async function middleware(req: NextRequest) {
     })
     const validRoles = ['admin', 'super-user', 'SEO']
     if (!session) {
-        return NextResponse.redirect(`https://${process.env.HOST_NAME}/auth/login?p=${!session ? '`/' : config.matcher[0]}`);
+        return NextResponse.redirect(`${process.env.HOST_NAME}/auth/login?p=${!session ? '`/' : config.matcher[0]}`);
     }
 
 
