@@ -34,11 +34,11 @@ const LoginPage = () => {
   // const { loginUser } = useContext(AuthContext);
   const [providers, setProviders] = useState<any>({});
 
-  useEffect(() => {
-    getProviders().then((prov) => {
-      setProviders(prov);
-    });
-  }, []);
+  // useEffect(() => {
+  //   getProviders().then((prov) => {
+  //     setProviders(prov);
+  //   });
+  // }, []);
 
   const onLoginUser = async ({ email, password }: FormData) => {
     setShowError(false);
@@ -140,7 +140,7 @@ const LoginPage = () => {
             </Grid>
           </Grid>
 
-          <Grid item xs={12} display="flex" justifyContent="end" flexDirection='column'>
+          {/* <Grid item xs={12} display="flex" justifyContent="end" flexDirection='column'>
             <Divider sx={{ width: "100%", mb: 2 }} />
             {Object.values(providers).map((provider: any) => {
               if(provider.id === 'credentials'){
@@ -164,7 +164,7 @@ const LoginPage = () => {
                 </MuiButton>
               );
             })}
-          </Grid>
+          </Grid> */}
         </Box>
       </form>
     </AuthLayout>

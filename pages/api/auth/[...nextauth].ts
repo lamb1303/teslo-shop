@@ -5,23 +5,23 @@ import { dbUsers } from "../../../database"
 export default NextAuth({
     // Configure one or more authentication providers
     providers: [
-        Credentials({
-            name: 'Custom Login',
-            credentials: {
-                email: { label: 'Correo', type: 'email', placeholder: 'correo@google.com' },
-                password: { label: 'Contraseña', type: 'password', placeholder: 'Contraseña' },
-            },
-            async authorize(credentials) {
+        // Credentials({
+        //     name: 'Custom Login',
+        //     credentials: {
+        //         email: { label: 'Correo', type: 'email', placeholder: 'correo@google.com' },
+        //         password: { label: 'Contraseña', type: 'password', placeholder: 'Contraseña' },
+        //     },
+        //     async authorize(credentials) {
 
-                // return { name: 'Beto', correo: 'beto@google.com', role: 'admin' };
-                return await dbUsers.checkUserEmailPassword(credentials!.email, credentials!.password)
-            }
-        }),
-        GithubProvider({
-            clientId: process.env.GITHUB_ID as string,
-            clientSecret: process.env.GITHUB_SECRET as string,
-            authorization: { params: { scope: 'identify guilds' } },
-        }),
+        //         // return { name: 'Beto', correo: 'beto@google.com', role: 'admin' };
+        //         return await dbUsers.checkUserEmailPassword(credentials!.email, credentials!.password)
+        //     }
+        // }),
+        // GithubProvider({
+        //     clientId: process.env.GITHUB_ID as string,
+        //     clientSecret: process.env.GITHUB_SECRET as string,
+        //     authorization: { params: { scope: 'identify guilds' } },
+        // }),
         // ...add more providers here
 
     ],

@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const entriesApi = axios.create({
-    baseURL: '/api'
+    baseURL: '/api',
+    timeout: 30000
 })
 
 export default entriesApi;
