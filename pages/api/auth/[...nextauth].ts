@@ -17,11 +17,11 @@ export default NextAuth({
                 return await dbUsers.checkUserEmailPassword(credentials!.email, credentials!.password)
             }
         }),
-        GithubProvider({
-            clientId: process.env.GITHUB_ID as string,
-            clientSecret: process.env.GITHUB_SECRET as string,
-            authorization: { params: { scope: 'identify guilds' } },
-        }),
+        // GithubProvider({
+        //     clientId: process.env.GITHUB_ID as string,
+        //     clientSecret: process.env.GITHUB_SECRET as string,
+        //     authorization: { params: { scope: 'identify guilds' } },
+        // }),
         // ...add more providers here
 
     ],
