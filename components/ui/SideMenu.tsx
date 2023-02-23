@@ -24,6 +24,7 @@ import {
   SearchOutlined,
   VpnKeyOutlined,
 } from "@mui/icons-material";
+import NextLink from "next/link";
 import { useContext, useState } from "react";
 import { AuthContext, UiContext } from "../../context";
 import { useRouter } from "next/router";
@@ -79,7 +80,7 @@ export const SideMenu = () => {
                 <ListItemText primary={"Perfil"} />
               </ListItem>
 
-              <ListItem button onClick={()=> navigateTo(`/orders/history`)}>
+              <ListItem button onClick={() => navigateTo(`/orders/history`)}>
                 <ListItemIcon>
                   <ConfirmationNumberOutlined />
                 </ListItemIcon>
@@ -122,17 +123,17 @@ export const SideMenu = () => {
           </ListItem>
 
           {!isLoggedIn ? (
-            <>
+            <NextLink href={{ pathname: `/auth/login` }}>
               <ListItem
                 button
-                onClick={() => navigateTo(`/auth/login?p=${router.asPath}`)}
+                // onClick={() => navigateTo(`/auth/login?p=${router.asPath}`)}
               >
                 <ListItemIcon>
                   <VpnKeyOutlined />
                 </ListItemIcon>
                 <ListItemText primary={"Ingresar"} />
               </ListItem>
-            </>
+            </NextLink>
           ) : (
             <>
               <ListItem button onClick={logout}>
@@ -150,26 +151,26 @@ export const SideMenu = () => {
               <Divider />
               <ListSubheader>Admin Panel</ListSubheader>
 
-              <ListItem button onClick={()=> navigateTo('/admin/')}>
+              <ListItem button onClick={() => navigateTo("/admin/")}>
                 <ListItemIcon>
                   <DashboardOutlined />
                 </ListItemIcon>
                 <ListItemText primary={"Dashboard"} />
               </ListItem>
-              <ListItem button  onClick={()=> navigateTo('/admin/products')}>
+              <ListItem button onClick={() => navigateTo("/admin/products")}>
                 <ListItemIcon>
                   <CategoryOutlined />
                 </ListItemIcon>
                 <ListItemText primary={"Productos"} />
               </ListItem>
-              <ListItem button  onClick={()=> navigateTo('/admin/orders')}>
+              <ListItem button onClick={() => navigateTo("/admin/orders")}>
                 <ListItemIcon>
                   <ConfirmationNumberOutlined />
                 </ListItemIcon>
                 <ListItemText primary={"Ordenes"} />
               </ListItem>
 
-              <ListItem button onClick={()=> navigateTo('/admin/users')}>
+              <ListItem button onClick={() => navigateTo("/admin/users")}>
                 <ListItemIcon>
                   <AdminPanelSettings />
                 </ListItemIcon>
