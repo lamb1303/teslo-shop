@@ -158,7 +158,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     props: {
       product,
     },
-    revalidate: 86400, // 60 * 60 * 24 = 24h
+    revalidate: 1, // 60 * 60 * 24 = 24h = 86400
   };
 };
 export default ProductPage;
