@@ -123,17 +123,15 @@ export const SideMenu = () => {
           </ListItem>
 
           {!isLoggedIn ? (
-            <NextLink href={{ pathname: `/auth/login` }}>
-              <ListItem
-                button
-                // onClick={() => navigateTo(`/auth/login?p=${router.asPath}`)}
-              >
-                <ListItemIcon>
-                  <VpnKeyOutlined />
-                </ListItemIcon>
-                <ListItemText primary={"Ingresar"} />
-              </ListItem>
-            </NextLink>
+            <ListItem
+              button
+              onClick={() => navigateTo(`/auth/login?p=${router.asPath}`)}
+            >
+              <ListItemIcon>
+                <VpnKeyOutlined />
+              </ListItemIcon>
+              <ListItemText primary={"Ingresar"} />
+            </ListItem>
           ) : (
             <>
               <ListItem button onClick={logout}>
