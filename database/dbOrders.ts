@@ -15,7 +15,19 @@ export const getOrderById = async (id: string): Promise<IOrder | null> => {
         return null
     }
 
-    return JSON.parse(JSON.stringify(order));
+    const formattedOrdersImage = {
+        ...order,
+        orderItems: order.orderItems.map((item) => {
+            const obj = {
+                ...item,
+                image: item.image.includes('http') ? item.image : `${process.env.HOST_NAME}products/${item.image}`
+            }
+            return obj
+        })
+    }
+
+
+    return JSON.parse(JSON.stringify(formattedOrdersImage));
 
 
 }

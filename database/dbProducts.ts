@@ -12,11 +12,11 @@ export const getProductBySlug = async (slug: string): Promise<IProduct | null> =
         return null
     }
 
-    product.images = product.images.map( image => {
-        return image.includes('http') ? image : `${ process.env.HOST_NAME}products/${ image }`
+    product.images = product.images.map(image => {
+        return image.includes('http') ? image : `${process.env.HOST_NAME}products/${image}`
     });
 
-    return JSON.parse( JSON.stringify( product ) );
+    return JSON.parse(JSON.stringify(product));
 }
 
 export const getAllProductsBySlug = async (): Promise<IProduct[]> => {
@@ -38,6 +38,17 @@ export const getProductsByTerm = async (term: string): Promise<IProduct[]> => {
         .lean();
     await db.disconnect();
 
-    return products
+    const formattedProductsImages = (products.map((product) => {
+        const obj = {
+            ...product,
+            images: product.images.map(image => {
+                return image.includes('http') ? image : `${process.env.HOST_NAME}products/${image}`
+            })
+        }
+        return obj
+    }))
+
+
+    return formattedProductsImages
 
 }
